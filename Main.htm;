@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postfix Expression Evaluator</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f8bff, #00ff80);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: rgb(2, 2, 2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #ffffff10;
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgb(2, 2, 2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      color: rgb(2, 2, 2);
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input {
+      background: #f0f8ff;
+      color: #000;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: rgb(2, 2, 2);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      background: #ffffff20;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Postfix Expression Evaluator</h1>
+    <input type="text" id="postfixInput" placeholder="Enter postfix expression (e.g. 5 6 + 2 *)">
+    <button onclick="evaluatePostfix()">Evaluate</button>
+    <div class="result" id="resultBox">Result will appear here</div>
+  </div>
+
+  <script>
+    function evaluatePostfix() {
+      const input = document.getElementById("postfixInput").value.trim();
+      const tokens = input.split(" ");
+      const stack = [];
+
+      for (let token of tokens) {
+        if (!isNaN(token)) {
+          stack.push(Number(token));
+        } else {
+          const b = stack.pop();
+          const a = stack.pop();
+          let result;
+
+          switch(token) {
+            case '+': result = a + b; break;
+            case '-': result = a - b; break;
+            case '*': result = a * b; break;
+            case '/': result = a / b; break;
+            case '^': result = Math.pow(a, b); break;
+            default:
+              document.getElementById("resultBox").innerText = "Invalid operator: " + token;
+              return;
+          }
+
+          stack.push(result);
+        }
+      }
+
+      if (stack.length === 1) {
+        document.getElementById("resultBox").innerText = "Result: " + stack[0];
+      } else {
+        document.getElementById("resultBox").innerText = "Invalid postfix expression";
+      }
+    }
+  </script>
+</body>
+</html>
